@@ -1,6 +1,5 @@
 package com.androidapp.movielist.repository
 
-import android.util.Log
 import com.androidapp.movielist.data.DataStatus
 import com.androidapp.movielist.data.dao.MovieList
 import com.androidapp.movielist.networkcalls.NetworkCalls

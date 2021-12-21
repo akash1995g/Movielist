@@ -38,7 +38,7 @@ class MovieListFragment : Fragment(), EventListener {
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
 
         _binding = FragmentMovieListBinding.inflate(inflater, container, false)
         return binding.root
@@ -48,10 +48,12 @@ class MovieListFragment : Fragment(), EventListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        binding.recycleView.layoutManager = GridLayoutManager(context, 3)
+        binding.recycleView.layoutManager = GridLayoutManager(context, 3) // Grid layout with 3 columns
+
         binding.recycleView.setItemViewCacheSize(20)
 
         mViewModel = ViewModelProvider(this)[MovieListViewModel::class.java]
+
         mViewModel.getMovieList.observe(viewLifecycleOwner, observer)
 
 
@@ -66,7 +68,8 @@ class MovieListFragment : Fragment(), EventListener {
                     val lastItem = layoutManager.findLastCompletelyVisibleItemPosition()
                     val currentTotalCount = layoutManager.itemCount
                     if (currentTotalCount <= lastItem + visibleThreshold) {
-                        mViewModel.updateList()
+                        // function request for more data
+                        mViewModel.loadMoreData()
                     }
                 }
 
@@ -74,9 +77,10 @@ class MovieListFragment : Fragment(), EventListener {
         })
 
         adapter = MovieListAdapter(arrayListOf(), this)
+
         binding.recycleView.adapter = adapter
 
-        mViewModel.needToShowProgressBar.observe(viewLifecycleOwner, Observer {
+        mViewModel.needToShowProgressBar.observe(viewLifecycleOwner, {
             Log.d(TAG, "onViewCreated: $it")
             if (it != null) {
                 if (it) {
@@ -105,7 +109,9 @@ class MovieListFragment : Fragment(), EventListener {
     }
 
     override fun onClick(movieDetails: MovieDetails) {
+
         val bundle = bundleOf(Pair(MovieDetailsFragment.MOVIE_DETAILS, Gson().toJson(movieDetails)))
+
         findNavController().navigate(R.id.action_MovieListFragment_to_MovieDetailsFragment, bundle)
     }
 

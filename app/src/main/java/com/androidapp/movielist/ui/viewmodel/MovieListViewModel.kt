@@ -34,7 +34,7 @@ class MovieListViewModel : ViewModel(), MovieResult {
 
     val needToShowProgressBar: LiveData<Boolean> = _needToShowProgressBar
 
-    fun updateList() {
+    fun loadMoreData() {
         needToShowProgressBar.let {
             if (it.value != true) {
                 viewModelScope.launch {

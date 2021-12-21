@@ -8,7 +8,10 @@ import retrofit2.http.Query
 
 interface ApiCallService {
 
-    @GET("3/discover/movie?api_key=8be2f9bca78ccfd1738ea790d3af466e")
-    fun getAllMovies(@Query("page") pageNumber: Int = 2): Call<MovieList>
+    @GET("3/discover/movie")
+    fun getAllMovies(
+        @Query("page") pageNumber: Int = 1,
+        @Query("api_key") apiKey: String = "8be2f9bca78ccfd1738ea790d3af466e"
+    ): Call<MovieList>
 
 }
