@@ -12,23 +12,36 @@ private const val TAG = "LoadData"
 
 class LoadData {
     companion object {
+
+        /**
+         * getApiInstance is used create a instance for Api Calls
+         */
         private fun getApiInstance(): ApiCallService {
             val network = NetworkCalls.instance()
             return network.create(ApiCallService::class.java)
         }
 
-        fun getImage(listener: MovieResult, page: Int) {
+        /**
+         * getMovieImageList is used get image list from the Server/Api
+         *
+         * @param listener will use MovieResult callback to notify the Api result
+         * @param page will be use to fetch movie list for specific page
+         *
+         */
+        fun getMovieImageList(listener: MovieResult, page: Int) {
+
             var dataStatus = DataStatus(false, arrayListOf(), "Unknown Error")
 
             val call = getApiInstance().getAllMovies(page)
+
             call.enqueue(object : retrofit2.Callback<MovieList> {
                 override fun onResponse(
                     call: retrofit2.Call<MovieList>,
                     response: retrofit2.Response<MovieList>
                 ) {
                     if (response.isSuccessful) {
+
                         val body = response.body()
-                        Log.d(TAG, "onResponse: $body")
                         if (body != null) {
                             dataStatus = DataStatus(true, body.moviesString, null)
                         }
@@ -48,10 +61,23 @@ class LoadData {
             })
         }
 
+        /**
+         *  getGenreNames function will take array of movie ids,
+         *  And returns it is Name for each genre id
+         *
+         *  @param genreId array list containing genres id
+         *
+         *  @return A Array list with the genre names
+         */
+
         fun getGenreNames(genreId: ArrayList<Int>): ArrayList<String> {
             val genreName = arrayListOf<String>()
             for (i in 0 until genreId.size) {
-                MovieGenre.genre[genreId[i]]?.let { genreName.add(it) }
+                if (MovieGenre.genre.containsKey(genreId[i])) {
+                    MovieGenre.genre[genreId[i]]?.let { genreName.add(it) }
+                } else {
+                    genreName.add("Unknown")
+                }
             }
             return genreName
         }

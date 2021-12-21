@@ -24,7 +24,7 @@ class MovieListViewModel : ViewModel(), MovieResult {
         viewModelScope.launch {
             _pageCount = 1
             _needToShowProgressBar.postValue(true)
-            LoadData.getImage(this@MovieListViewModel, _pageCount)
+            LoadData.getMovieImageList(this@MovieListViewModel, _pageCount)
         }
 
     }
@@ -39,7 +39,7 @@ class MovieListViewModel : ViewModel(), MovieResult {
             if (it.value != true) {
                 viewModelScope.launch {
                     _needToShowProgressBar.postValue(true)
-                    LoadData.getImage(this@MovieListViewModel, _pageCount)
+                    LoadData.getMovieImageList(this@MovieListViewModel, _pageCount)
                 }
             }
         }

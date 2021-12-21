@@ -78,7 +78,7 @@ class MovieDetailsFragment : Fragment() {
                 detailsLayout.movieReviews.text = "Reviews : " + movieDetails!!.voteCount
                 detailsLayout.movieRating.rating = movieDetails!!.averageVote
                 movieDescription.text = movieDetails!!.description
-                detailsLayout.releaseDate.text = "Release on : " + movieDetails!!.releaseDate
+                detailsLayout.releaseDate.text = "Released on : " + movieDetails!!.releaseDate
                 detailsLayout.movieTitle.also {
                     it.text = movieDetails!!.title
                     it.setTextColor(Color.WHITE)
