@@ -8,6 +8,8 @@ import androidx.lifecycle.viewModelScope
 import com.androidapp.movielist.data.DataStatus
 import com.androidapp.movielist.data.dao.MovieDetails
 import com.androidapp.movielist.repository.LoadData
+import com.androidapp.movielist.utils.GlobalContext
+import com.androidapp.movielist.utils.Utils
 import kotlinx.coroutines.launch
 
 private const val TAG = "MovieListViewModel"
@@ -60,6 +62,7 @@ class MovieListViewModel : ViewModel(), MovieResult {
             _pageCount++
         } else {
             Log.d(TAG, "onResult: " + dataStatus.onError)
+            Utils.showToast(GlobalContext.applicationContext(), "Failed to load the new Data")
         }
 
         _needToShowProgressBar.postValue(false)
