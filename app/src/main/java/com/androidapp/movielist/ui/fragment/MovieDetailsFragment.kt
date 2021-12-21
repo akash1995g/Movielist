@@ -16,6 +16,7 @@ import com.androidapp.movielist.R
 import com.androidapp.movielist.data.dao.MovieDetails
 import com.androidapp.movielist.databinding.MovieDetailsFragmentBinding
 import com.androidapp.movielist.repository.LoadData
+import com.androidapp.movielist.utils.Utils
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 
@@ -73,6 +74,7 @@ class MovieDetailsFragment : Fragment() {
             Glide.with(view).load(baseUrl + movieDetails!!.imagePath).into(binding.movieImage)
 
             binding.apply {
+
                 detailsLayout.movieReviews.text = "Reviews : " + movieDetails!!.voteCount
                 detailsLayout.movieRating.rating = movieDetails!!.averageVote
                 movieDescription.text = movieDetails!!.description
@@ -90,6 +92,7 @@ class MovieDetailsFragment : Fragment() {
                     textView.setTextColor(Color.WHITE)
                     textView.textSize = 8F
                     textView.setTypeface(textView.typeface, Typeface.BOLD_ITALIC)
+
                     textView.background = context?.let { it1 ->
                         ContextCompat.getDrawable(
                             it1,
@@ -99,6 +102,10 @@ class MovieDetailsFragment : Fragment() {
                     detailsLayout.grid.addView(textView)
                 }
 
+            }
+
+            binding.bookNow.setOnClickListener {
+                Utils.showToast(context, "Need to implement this function")
             }
         }
     }
