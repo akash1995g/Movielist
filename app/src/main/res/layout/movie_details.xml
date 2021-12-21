@@ -10,28 +10,32 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"
         android:gravity="center"
+        android:textColor="@color/white"
         android:textSize="20sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <GridLayout
+        android:id="@+id/grid"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:columnCount="4"
+        app:flow_horizontalGap="2dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/movie_title" />
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/release_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:gravity="center"
+        android:textColor="@color/white"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_title" />
+        app:layout_constraintTop_toBottomOf="@+id/grid" />
 
-    <com.google.android.material.textview.MaterialTextView
-        android:id="@+id/movie_reviews"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/release_date" />
 
     <RatingBar
         android:id="@+id/movie_rating"
@@ -45,6 +49,25 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/movie_reviews" />
+        app:layout_constraintTop_toBottomOf="@+id/release_date" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/rating_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toStartOf="@+id/movie_reviews"
+        app:layout_constraintStart_toStartOf="@+id/movie_rating"
+        app:layout_constraintTop_toBottomOf="@+id/movie_rating" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/movie_reviews"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:gravity="center"
+        android:textColor="@color/white"
+        app:layout_constraintEnd_toEndOf="@+id/movie_rating"
+        app:layout_constraintStart_toEndOf="@+id/rating_text"
+        app:layout_constraintTop_toBottomOf="@id/movie_rating" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

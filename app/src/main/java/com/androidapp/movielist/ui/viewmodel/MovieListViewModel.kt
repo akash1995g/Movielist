@@ -15,25 +15,54 @@ private const val TAG = "MovieListViewModel"
 class MovieListViewModel : ViewModel(), MovieResult {
 
     private val _loadMovieList = MutableLiveData<List<MovieDetails>>()
+    private val _needToShowProgressBar = MutableLiveData<Boolean>()
+    private var _pageCount = 1
 
     init {
         viewModelScope.launch {
-            LoadData.getImage(this@MovieListViewModel)
+            _pageCount = 1
+            _needToShowProgressBar.postValue(true)
+            LoadData.getImage(this@MovieListViewModel, _pageCount)
         }
 
     }
 
+
     val getMovieList: LiveData<List<MovieDetails>> = _loadMovieList
 
+    val needToShowProgressBar: LiveData<Boolean> = _needToShowProgressBar
+
     fun updateList() {
+        needToShowProgressBar.let {
+            if (it.value != true) {
+                viewModelScope.launch {
+                    _needToShowProgressBar.postValue(true)
+                    LoadData.getImage(this@MovieListViewModel, _pageCount)
+                }
+            }
+        }
 
     }
 
     override fun onResult(dataStatus: DataStatus) {
-        Log.d(TAG, "onResult: " + dataStatus.movieList.size)
+
         if (dataStatus.isSuccess) {
-            _loadMovieList.postValue(dataStatus.movieList)
+
+            if (_pageCount == 1) {
+                _loadMovieList.postValue(dataStatus.movieList)
+            } else {
+                _loadMovieList.also {
+                    val oldData = getMovieList.value?.toMutableList()
+                    oldData?.addAll(dataStatus.movieList)
+                    it.postValue(oldData)
+                }
+            }
+            _pageCount++
+        } else {
+            Log.d(TAG, "onResult: " + dataStatus.onError)
         }
+
+        _needToShowProgressBar.postValue(false)
     }
 
 }

@@ -1,11 +1,9 @@
 package com.androidapp.movielist.ui.fragment.movielist
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.androidapp.movielist.R
 import com.androidapp.movielist.data.dao.MovieDetails
@@ -14,7 +12,7 @@ import com.bumptech.glide.Glide
 private const val TAG = "MovieListAdapter"
 
 class MovieListAdapter(
-    private val list: List<MovieDetails>,
+    val list: MutableList<MovieDetails>,
     private val listener: EventListener
 ) :
     RecyclerView.Adapter<MovieListAdapter.MovieDetailsView>() {

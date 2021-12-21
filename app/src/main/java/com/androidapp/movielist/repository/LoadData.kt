@@ -6,6 +6,7 @@ import com.androidapp.movielist.data.dao.MovieList
 import com.androidapp.movielist.networkcalls.NetworkCalls
 import com.androidapp.movielist.networkcalls.api.ApiCallService
 import com.androidapp.movielist.ui.viewmodel.MovieResult
+import com.androidapp.movielist.utils.MovieGenre
 
 private const val TAG = "LoadData"
 
@@ -16,10 +17,10 @@ class LoadData {
             return network.create(ApiCallService::class.java)
         }
 
-        fun getImage(listener: MovieResult) {
+        fun getImage(listener: MovieResult, page: Int) {
             var dataStatus = DataStatus(false, arrayListOf(), "Unknown Error")
 
-            val call = getApiInstance().getAllMovies()
+            val call = getApiInstance().getAllMovies(page)
             call.enqueue(object : retrofit2.Callback<MovieList> {
                 override fun onResponse(
                     call: retrofit2.Call<MovieList>,
@@ -45,6 +46,14 @@ class LoadData {
                 }
 
             })
+        }
+
+        fun getGenreNames(genreId: ArrayList<Int>): ArrayList<String> {
+            val genreName = arrayListOf<String>()
+            for (i in 0 until genreId.size) {
+                MovieGenre.genre[genreId[i]]?.let { genreName.add(it) }
+            }
+            return genreName
         }
 
     }

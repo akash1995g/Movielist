@@ -1,6 +1,7 @@
 package com.androidapp.movielist.data.dao
 
 import com.google.gson.annotations.SerializedName
+import java.lang.reflect.Array
 
 
 data class MovieList(
@@ -11,7 +12,7 @@ data class MovieList(
 )
 
 data class MovieDetails(
-   // @SerializedName("genre_ids") val genreIds: String,
+    @SerializedName("genre_ids") val genreIds: ArrayList<Int>,
     @SerializedName("title") val title: String,
     @SerializedName("release_date") val releaseDate: String,
     @SerializedName("vote_average") val averageVote: Float,
@@ -22,5 +23,4 @@ data class MovieDetails(
     @SerializedName("backdrop_path") val ImageBackDrop: String
 )
 
-data class MovieGenre(val genreId: Int)
 

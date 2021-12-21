@@ -1,14 +1,21 @@
 package com.androidapp.movielist.ui.fragment
 
 import android.graphics.Color
+import android.graphics.Typeface
+import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
+import androidx.core.content.ContextCompat
+import androidx.core.view.marginTop
 import androidx.fragment.app.Fragment
+import com.androidapp.movielist.R
 import com.androidapp.movielist.data.dao.MovieDetails
 import com.androidapp.movielist.databinding.MovieDetailsFragmentBinding
+import com.androidapp.movielist.repository.LoadData
 import com.bumptech.glide.Glide
 import com.google.gson.Gson
 
@@ -38,7 +45,6 @@ class MovieDetailsFragment : Fragment() {
         arg?.let {
             movieDetails =
                 Gson().fromJson(it, MovieDetails::class.java)
-            Log.d(TAG, "onCreate: " + movieDetails?.title)
         }
 
 
@@ -70,11 +76,29 @@ class MovieDetailsFragment : Fragment() {
                 detailsLayout.movieReviews.text = "Reviews : " + movieDetails!!.voteCount
                 detailsLayout.movieRating.rating = movieDetails!!.averageVote
                 movieDescription.text = movieDetails!!.description
-                detailsLayout.releaseDate.text = "R : " + movieDetails!!.releaseDate
+                detailsLayout.releaseDate.text = "Release on : " + movieDetails!!.releaseDate
                 detailsLayout.movieTitle.also {
                     it.text = movieDetails!!.title
                     it.setTextColor(Color.WHITE)
                 }
+                detailsLayout.ratingText.text = movieDetails!!.averageVote.toString()
+
+                val genre = LoadData.getGenreNames(movieDetails!!.genreIds)
+                for (name in 0 until genre.size) {
+                    val textView = TextView(context)
+                    textView.text = genre[name]
+                    textView.setTextColor(Color.WHITE)
+                    textView.textSize = 8F
+                    textView.setTypeface(textView.typeface, Typeface.BOLD_ITALIC)
+                    textView.background = context?.let { it1 ->
+                        ContextCompat.getDrawable(
+                            it1,
+                            R.drawable.round_shape
+                        )
+                    }
+                    detailsLayout.grid.addView(textView)
+                }
+
             }
         }
     }

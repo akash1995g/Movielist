@@ -1,6 +1,7 @@
 package com.androidapp.movielist.ui.fragment.movielist
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -26,6 +27,7 @@ private const val TAG = "MovieListFragment"
 
 class MovieListFragment : Fragment(), EventListener {
 
+    private var adapter: MovieListAdapter? = null
     private lateinit var mViewModel: MovieListViewModel
     private var _binding: FragmentMovieListBinding? = null
 
@@ -64,10 +66,24 @@ class MovieListFragment : Fragment(), EventListener {
                     val lastItem = layoutManager.findLastCompletelyVisibleItemPosition()
                     val currentTotalCount = layoutManager.itemCount
                     if (currentTotalCount <= lastItem + visibleThreshold) {
-                        //LoadData.loadMoreData()
+                        mViewModel.updateList()
                     }
                 }
 
+            }
+        })
+
+        adapter = MovieListAdapter(arrayListOf(), this)
+        binding.recycleView.adapter = adapter
+
+        mViewModel.needToShowProgressBar.observe(viewLifecycleOwner, Observer {
+            Log.d(TAG, "onViewCreated: $it")
+            if (it != null) {
+                if (it) {
+                    binding.progressCircular.visibility = View.VISIBLE
+                } else {
+                    binding.progressCircular.visibility = View.GONE
+                }
             }
         })
 
@@ -75,10 +91,11 @@ class MovieListFragment : Fragment(), EventListener {
 
     private val observer: Observer<List<MovieDetails>> = Observer {
         if (!it.isNullOrEmpty()) {
-            val adapter = MovieListAdapter(it, this)
-            binding.recycleView.adapter = adapter
-            val count = adapter.itemCount
-            adapter.notifyItemMoved(count, it.size)
+            adapter?.let { oldList ->
+                oldList.list.addAll(it)
+                val count = oldList.itemCount
+                oldList.notifyItemRangeInserted(count, it.size)
+            }
         }
     }
 
