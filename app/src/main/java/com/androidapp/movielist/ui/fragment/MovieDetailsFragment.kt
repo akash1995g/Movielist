@@ -5,6 +5,7 @@ import android.graphics.Typeface
 import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.util.Log
+import android.util.TypedValue
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -90,7 +91,7 @@ class MovieDetailsFragment : Fragment() {
                     val textView = TextView(context)
                     textView.text = genre[name]
                     textView.setTextColor(Color.WHITE)
-                    textView.textSize = 8F
+                    textView.setTextSize(TypedValue.COMPLEX_UNIT_SP,8F)
                     textView.setTypeface(textView.typeface, Typeface.BOLD_ITALIC)
 
                     textView.background = context?.let { it1 ->
